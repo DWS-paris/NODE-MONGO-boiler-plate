@@ -11,7 +11,7 @@ Définition des routes
 */
     // Accueil
     router.get('/', (req, res) => {
-        res.render('index', { title: 'Bienvennue sur VoxPopulis', isLogged: false });
+        res.render('index', { title: 'Bienvenue sur VoxPopulis', isLogged: false });
     });
 
     // Inscription

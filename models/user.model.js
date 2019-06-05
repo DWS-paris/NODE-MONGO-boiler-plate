@@ -14,7 +14,7 @@ Declare each property and type needed for the schema
         email: { type: String, unique: true },
         password: String,
         pseudo: String,
-        creationDate: String
+        creationDate: Date
     })
 //
 /*

@@ -20,13 +20,31 @@ Route auth
             req.body.email.length > 4 &&
             req.body.password.length > 4
         ){
-            
+            // Set server data
+            req.body.creationDate = new Date();
 
             return new Promise( (resolve, reject) => {
-                return resolve(res.json({ msg: 'Data sended', data: null }))
-            })
-            
+                // Hash user password
+                bcrypt.hash(req.body.password, 10)
+                .then( hashedPassword => {
+                    // Change user password
+                    req.body.password = hashedPassword;
+                    
+                    // Register new user
+                    UserModel.create(req.body)
+                    .then( userData => {
+                        return resolve(res.json({ msg: 'User registrated', data: userData }))
+                    })
+                    .catch( error => {
+                        return reject(res.json({ msg: 'User not registrated', data: error }))
+                    })
 
+                })
+                .catch( errorBycrypt => {
+                    console.log(errorBycrypt)
+                    return reject(res.json({ msg: 'User not registrated', data: errorBycrypt }))
+                })
+            })
         }
         else{
             return res.json({ msg: 'No data', data: null })
