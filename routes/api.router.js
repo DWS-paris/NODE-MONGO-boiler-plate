@@ -62,7 +62,22 @@ Route auth
                 req.body.password.length > 4
             ){
                 
-                return res.json({ msg: 'No data', data: null })
+                // Check user eamil
+                UserModel.findOne({ email: req.body.email }, (err, user) => {
+                    if(err){
+                        return reject( res.json({ msg: 'No user', data: null }) )
+                    }
+                    else{
+                        // Check password
+                        const validatedPassword = bcrypt.compareSync( req.body.password, user.password )
+                        if(validatedPassword){
+                            return resolve( res.json({ msg: 'User is logged', data: user.generateJwt(user) }) )
+                        }
+                        else{
+                            return reject( res.json({ msg: 'Bad password', data: null }) )
+                        }
+                    }
+                })
                 
             }
             else{

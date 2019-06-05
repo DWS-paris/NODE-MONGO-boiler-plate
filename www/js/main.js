@@ -94,7 +94,32 @@ document.addEventListener('DOMContentLoaded', () => {
     Login page
     */
         if(loginPage != null){
-            console.log('Home')
+            // Déclaration
+            const loginForm = document.querySelector('#loginForm')
+            const email = document.querySelector('#email')
+            const password = document.querySelector('#password')
+
+            //Capter la soumission
+            loginForm.addEventListener('submit', event => {
+                event.preventDefault();
+
+                // Check value
+                if(
+                    email.value.length > 4 &&
+                    password.value.length > 4
+                ){
+                    // Register new user
+                    asyncFetch('/api/auth/login', 'POST', {
+                        email: email.value,
+                        password: password.value
+                    })
+                    .then( apiResponse => console.log(apiResponse))
+                    .catch( apiError => console.error(apiError))
+                }
+                else{ 
+                    console.log('Formulaire non-validé');
+                }
+            })
         }
     //
 
