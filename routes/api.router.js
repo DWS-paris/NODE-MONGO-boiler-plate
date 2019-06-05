@@ -6,6 +6,12 @@ Configurer le module de route
     const router = express.Router();
     const UserModel = require('../models/user.model');
     const bcrypt = require('bcryptjs');
+
+    const passport = require('passport');
+
+    // Authentication
+    const { setAuthentication } = require('../services/auth.service');
+    setAuthentication(passport);
 //
 
 /*
@@ -71,7 +77,11 @@ Route auth
                         // Check password
                         const validatedPassword = bcrypt.compareSync( req.body.password, user.password )
                         if(validatedPassword){
-                            return resolve( res.json({ msg: 'User is logged', data: user.generateJwt(user) }) )
+
+                            // Set cookie
+                            res.cookie(process.env.COOKIE_NAME, user.generateJwt(user), { httpOnly: true });
+
+                            return resolve( res.json({ msg: 'User is logged', data: user }) )
                         }
                         else{
                             return reject( res.json({ msg: 'Bad password', data: null }) )
@@ -85,6 +95,12 @@ Route auth
             }
         })
     });
+
+    router.get('/auth/me', passport.authenticate('jwt', { session: false }), (req, res) => {
+        return new Promise( (resolve, reject) => {
+            return resolve(res.json({ msg: 'Connected user', data: req.user }))
+        })
+    })
 //
 
 
