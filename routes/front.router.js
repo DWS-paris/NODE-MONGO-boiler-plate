@@ -24,6 +24,12 @@ Définition des routes
         res.render('login', { title: 'Connectez-vous', isLogged: false });
     });
 
+    // Deconnexion
+    router.get('/logout', (req, res) => {
+        res.clearCookie(process.env.COOKIE_NAME)
+        return res.redirect('/')
+    });
+
     // Mon compte
     router.get('/me', (req, res) => {
         res.render('me', { title: 'Mon compte', isLogged: false });

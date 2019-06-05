@@ -20,18 +20,6 @@
             -->
             <p><%= title %></p>
             <nav>
-                <ul>
-                    <li><a href="/">Accueil</a></li>
-
-                    <% if(!isLogged) { %>
-                        <li><a href="/register">Inscription</a></li>
-                        <li><a href="/login">Connexion</a></li>
-                    <% } %>
-
-                    <% if(isLogged) { %>
-                        <li><a href="/logout">Déconnexion</a></li>
-                        <li><a href="/me">Mon compte</a></li>
-                    <% } %>
-                </ul>
+                <ul id="mainNav"></ul>
             </nav>
         </header>

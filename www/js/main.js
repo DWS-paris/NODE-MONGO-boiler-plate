@@ -51,6 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
     }
 
+    // Method to display navigation
+    asyncFetch('/api/auth/me')
+    .then( () => {
+        document.querySelector('#mainNav').innerHTML = `
+            <li><a href="/">Accueil</a></li>
+            <li><a href="/logout">Déconnexion</a></li>
+            <li><a href="/me">Mon compte</a></li>
+        `
+    })
+    .catch( () => {
+        document.querySelector('#mainNav').innerHTML = `
+            <li><a href="/">Accueil</a></li>
+            <li><a href="/register">Inscription</a></li>
+            <li><a href="/login">Connexion</a></li>
+        `
+    })
+
     // Vérifier la page active
     if(homePage != null){
         console.log('Home')
@@ -81,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     email: email.value,
                     password: password.value
                 })
-                .then( apiResponse => console.log(apiResponse))
+                .then( apiResponse => location = '/login')
                 .catch( apiError => console.error(apiError))
             } 
             else{ 
@@ -113,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         email: email.value,
                         password: password.value
                     })
-                    .then( apiResponse => console.log(apiResponse))
+                    .then( () => location = '/')
                     .catch( apiError => console.error(apiError))
                 }
                 else{ 
@@ -124,6 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
     //
 
     if(mePage != null){
-        console.log('Me')
+        // Check if userr is connected
+        asyncFetch('/api/auth/me')
+        .then( apiResponse => console.log(apiResponse))
+        .catch( apiError => location = '/')
     }
 })
