@@ -6,6 +6,7 @@ Importer les composants serveur
     const express = require('express');
     const path = require('path');
     const bodyParser = require('body-parser');
+    const cookieParser = require('cookie-parser');
 
     // Inner
     const frontRouter = require('./routes/front.router');
@@ -30,6 +31,9 @@ Configuration du serveur
     // Configurration de body-parser
     server.use(bodyParser.json({limit: '10mb'}));
     server.use(bodyParser.urlencoded({ extended: true }));
+
+    //=> Use CookieParser to setup serverside cookies
+    server.use(cookieParser(process.env.COOKIE_SECRET));
 
     // Utilisation des routers
     server.use('/api', apiRouter);
